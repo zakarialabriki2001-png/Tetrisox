@@ -1,0 +1,61 @@
+{
+  "entities": {
+    "Match": {
+      "title": "Match",
+      "description": "Football match with odds, predictions, and final settled scores",
+      "type": "object",
+      "properties": {
+        "match_id": { "type": "string" },
+        "league_code": { "type": "string" },
+        "league_name": { "type": "string" },
+        "home": { "type": "string" },
+        "away": { "type": "string" },
+        "kickoff": { "type": "string" },
+        "p1": { "type": "number" },
+        "px": { "type": "number" },
+        "p2": { "type": "number" },
+        "pred": { "type": "string" },
+        "coef": { "type": "number" },
+        "status": { "type": "string", "enum": ["UPCOMING", "FINISHED"] },
+        "ft_home": { "type": ["number", "null"] },
+        "ft_away": { "type": ["number", "null"] },
+        "ht_home": { "type": ["number", "null"] },
+        "ht_away": { "type": ["number", "null"] },
+        "cipher_key": { "type": "number" },
+        "signal_code": { "type": "string" },
+        "signal_code_v2": { "type": "string" },
+        "xg_home": { "type": "number" },
+        "xg_away": { "type": "number" },
+        "expected_score": { "type": "string" },
+        "confidence_tier": { "type": "string" },
+        "risk_flag": { "type": "string" },
+        "updated_at": { "type": "string" }
+      },
+      "required": ["match_id", "home", "away", "kickoff", "status"]
+    },
+    "SystemMeta": {
+      "title": "SystemMeta",
+      "description": "Global telemetry and training performance metadata",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "total_picks": { "type": "number" },
+        "correct_picks": { "type": "number" },
+        "win_rate": { "type": "number" },
+        "last_sync": { "type": "string" },
+        "updated_at": { "type": "string" }
+      },
+      "required": ["id", "updated_at"]
+    }
+  },
+  "firestore": {
+    "/matches/{matchId}": {
+      "schema": { "$ref": "#/entities/Match" },
+      "description": "Collection of all analyzed, active, and settled soccer matches"
+    },
+    "/system_meta/{metaId}": {
+      "schema": { "$ref": "#/entities/SystemMeta" },
+      "description": "Global summary stats and system telemetry snapshots"
+    }
+  }
+}
