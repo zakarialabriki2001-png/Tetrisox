@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    function isValidMatch(data) {
+      return data.keys().hasAll(['match_id', 'home', 'away', 'kickoff', 'status'])
+        && data.match_id is string && data.match_id.size() <= 128
+        && data.home is string && data.home.size() <= 100
+        && data.away is string && data.away.size() <= 100
+        && data.kickoff is string && data.kickoff.size() <= 64
+        && (data.status == 'UPCOMING' || data.status == 'FINISHED');
+    }
+
+    function isValidSystemMeta(data) {
+      return data.keys().hasAll(['id', 'updated_at'])
+        && data.id is string && data.id.size() <= 64
+        && data.updated_at is string && data.updated_at.size() <= 64;
+    }
+
+    match /matches/{matchId} {
+      allow read: if true;
+      allow create: if isValidId(matchId) && isValidMatch(request.resource.data);
+      allow update: if isValidId(matchId) && isValidMatch(request.resource.data);
+      allow delete: if false;
+    }
+
+    match /system_meta/{metaId} {
+      allow read: if true;
+      allow create: if isValidId(metaId) && isValidSystemMeta(request.resource.data);
+      allow update: if isValidId(metaId) && isValidSystemMeta(request.resource.data);
+      allow delete: if false;
+    }
+  }
+}

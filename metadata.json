@@ -1,0 +1,6 @@
+{
+  "name": "APEX 2 · Dual Daily Slip Intelligence",
+  "description": "Ultra-conviction sports intelligence system targeting exactly 2 slips per day (Slip 1 Odds >= 2.00, Slip 2 Odds >= 3.00) powered by a 30 AI Agents Voting Council and top-tier league multi-market analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
